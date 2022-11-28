@@ -1,18 +1,20 @@
 module.exports = {
-  mode: 'development',
-  entry: "./dist/tsc/client/app.js",
-  devtool: "source-map",
-  output: {
-    filename: "app.js",
-    library: "app"
-  },
+  entry: "./client/app.ts",
   module: {
     rules: [
       {
-        test: /\.js$/,
-        enforce: "pre",
-        use: ["source-map-loader"],
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
       },
     ],
-  }
-}
+  },
+  mode: "production",
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+  },
+  output: {
+    filename: "app.js",
+    path: __dirname + "dist/client",
+  },
+};

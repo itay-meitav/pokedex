@@ -1,10 +1,9 @@
-import { json } from 'body-parser';
-import { MongoClient, Db, Collection } from 'mongodb';
-import { Pokemon } from 'src/client/Pokemon';
+require("dotenv").config();
+import { MongoClient, Db, Collection } from "mongodb";
+import { Pokemon } from "../client/Pokemon";
 
-export const uri =
-  'mongodb+srv://itay234:abc12345@cluster0.one6i.mongodb.net/?retryWrites=true&w=majority';
-export const client = new MongoClient(uri);
+export const uri = process.env.MONGO_DB;
+export const client = new MongoClient(uri!);
 
 export async function create() {
   try {
@@ -12,7 +11,7 @@ export async function create() {
   } catch (e) {
     console.error(e);
   } finally {
-    console.log('connected to DB');
+    console.log("connected to DB");
   }
 }
 
@@ -29,73 +28,79 @@ export async function getCollection(
 
 export async function get20Pokemons(from = 0, limit = 20) {
   try {
-    const pokemons = await getCollection('pokedex', 'pokemons');
+    const pokemons = await getCollection("pokedex", "pokemons");
     return await pokemons.find({}).skip(from).limit(limit).toArray();
   } catch (e) {
     console.error(e);
   } finally {
-    console.log('done loading 20 pokemons');
+    console.log("done loading 20 pokemons");
   }
 }
 
 export async function getPokemonSearch(pokemon: string | number) {
-  if (typeof pokemon === 'string') {
+  if (typeof pokemon === "string") {
     try {
-      const collectionName = await getCollection('pokedex', 'pokemons');
+      const collectionName = await getCollection("pokedex", "pokemons");
       return await collectionName.findOne({ name: pokemon });
     } catch (e) {
       console.error(e);
     } finally {
-      console.log('done pokemon search');
+      console.log("done pokemon search");
     }
   } else {
     try {
-      const collectionName = await getCollection('pokedex', 'pokemons');
+      const collectionName = await getCollection("pokedex", "pokemons");
       return await collectionName.findOne({ id: pokemon });
     } catch (e) {
       console.error(e);
     } finally {
-      console.log('done pokemon search');
+      console.log("done pokemon search");
     }
   }
 }
 
 export async function getAllStars() {
   try {
-    const collectionName = await getCollection('pokedex', 'pokemons');
+    const collectionName = await getCollection("pokedex", "pokemons");
     return await collectionName.find({ isFavorite: true }).toArray();
   } catch (e) {
     console.error(e);
   } finally {
-    console.log('done loading stars');
+    console.log("done loading stars");
   }
 }
 
 export async function RemoveStars(pokemon: string) {
   try {
-    const collectionName = await getCollection('pokedex', 'pokemons');
-    return await collectionName.updateOne({ name: pokemon }, { $set: { isFavorite: false } });
+    const collectionName = await getCollection("pokedex", "pokemons");
+    return await collectionName.updateOne(
+      { name: pokemon },
+      { $set: { isFavorite: false } }
+    );
   } catch (e) {
     console.error(e);
   } finally {
-    console.log('done removing star');
+    console.log("done removing star");
   }
 }
 
 export async function AddStars(pokemon: string) {
   try {
-    const collectionName = await getCollection('pokedex', 'pokemons');
-    return await collectionName.updateOne({ name: pokemon }, { $set: { isFavorite: true } });
+    const collectionName = await getCollection("pokedex", "pokemons");
+    return await collectionName.updateOne(
+      { name: pokemon },
+      { $set: { isFavorite: true } }
+    );
   } catch (e) {
     console.error(e);
   } finally {
-    console.log('done adding star');
+    console.log("done adding star");
   }
 }
 
 export async function SearchStars(pokemon: string) {
   try {
-    const collectionName = await getCollection('pokedex', 'pokemons');
+    const collectionName = await getCollection("pokedex", "pokemons");
     const find = await collectionName.findOne({ name: pokemon });
     return find?.isFavorite == true;
   } catch (e) {
@@ -103,10 +108,20 @@ export async function SearchStars(pokemon: string) {
   }
 }
 
-export async function get20Sorted(from: number = 0, limit: number = 20, sortBy: 'name' | 'id', dir: 1 | -1) {
+export async function get20Sorted(
+  from: number = 0,
+  limit: number = 20,
+  sortBy: "name" | "id",
+  dir: 1 | -1
+) {
   try {
     const pokemons = await getCollection("pokedex", "pokemons");
-    let response = await pokemons.find({}).sort(sortBy, dir).skip(from).limit(limit).toArray();
+    let response = await pokemons
+      .find({})
+      .sort(sortBy, dir)
+      .skip(from)
+      .limit(limit)
+      .toArray();
     return response;
   } catch (e) {
     console.error(e);

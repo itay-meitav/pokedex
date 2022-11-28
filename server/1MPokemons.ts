@@ -1,19 +1,12 @@
-const { MongoClient, Collection, ServerApiVersion } = require('mongodb');
-const fs = require('fs');
+import { MongoClient, Collection, ServerApiVersion } from "mongodb";
+import * as fs from "fs";
 
-let data = JSON.parse(fs.readFileSync('./pokemonData.json', 'utf-8'));
-// ?WARRNING: Nitzan's mongoDb address is used here and not Itay's.
-const uri =
-  'mongodb+srv://nitzanpap:ilovecode@cluster0.nercoqf.mongodb.net/?retryWrites=true&w=majority';
+let data = JSON.parse(fs.readFileSync("./pokemonData.json", "utf-8"));
 
 const amountOfOriginalPokemons = data.length;
 let fusionIterator = amountOfOriginalPokemons + 1;
 
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-});
+const client = new MongoClient(process.env.MONGO_DB);
 
 run();
 
@@ -41,7 +34,7 @@ function addAllFusionsToArray(arr) {
 
 function combinePokemons(pok1, pok2, id) {
   return {
-    name: pok1.name + '/' + pok2.name,
+    name: pok1.name + "/" + pok2.name,
     rawData: null,
     id: id,
     height: Math.floor((pok1.height + pok2.height) / 2).toString(),
@@ -65,11 +58,11 @@ async function addArrayToDb(arr) {
   try {
     await client.connect();
     // Declare db and its collection
-    let pokedex = client.db('pokedex');
-    let pokemons = pokedex.collection('pokemons');
+    let pokedex = client.db("pokedex");
+    let pokemons = pokedex.collection("pokemons");
     // Clear any previous data in the collection and redeclare the collection
     pokemons.drop();
-    pokemons = pokedex.collection('pokemons');
+    pokemons = pokedex.collection("pokemons");
 
     // Insert all pokemons, originals and fusions, into the db.
     await pokemons.insertMany(arr, {

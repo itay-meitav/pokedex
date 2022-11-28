@@ -1,42 +1,36 @@
 {
-  "name": "heroku-starter-project",
+  "name": "pokedex",
+  "version": "1.0.0",
   "scripts": {
-    "start": "gulp",
-    "server": "nodemon --watch ./src/server ./src/server/server.ts",
-    "deploy": "gulp deploy",
-    "lint": "eslint ./src --ext .ts",
-    "lint-fix": "eslint ./src --ext .ts --fix",
-    "jest": "jest"
+    "init-p": "npm ci && cd ./server && npm ci",
+    "start": "gulp dev",
+    "build": "gulp deploy",
+    "prod": "node dist/server/server.js",
+    "test-server": "cd ./server && npm run jest"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itay-meitav/pokedex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itay-meitav/pokedex/issues"
+  },
+  "homepage": "https://github.com/itay-meitav/pokedex#readme",
   "dependencies": {
-    "body-parser": "^1.20.0",
-    "cors": "^2.8.5",
-    "express": "^4.18.1",
-    "mongodb": "^4.7.0",
-    "pg": "^8.7.3",
-    "webpack": "^5.73.0"
-  },
-  "devDependencies": {
-    "@types/body-parser": "^1.19.2",
-    "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.13",
-    "@types/jest": "^28.1.4",
-    "@types/mongodb": "^4.0.7",
-    "@types/node": "^18.0.3",
-    "@typescript-eslint/eslint-plugin": "^5.30.5",
-    "@typescript-eslint/parser": "^5.30.5",
-    "eslint": "^8.19.0",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
-    "gulp-rename": "^2.0.0",
     "gulp-sass": "^5.1.0",
-    "jest": "^28.1.2",
-    "nodemon": "^2.0.19",
-    "sass": "^1.53.0",
-    "source-map-loader": "^4.0.0",
-    "ts-jest": "^28.0.5",
-    "ts-node": "^10.8.2",
-    "typescript": "^4.7.4",
+    "nodemon": "^2.0.20",
+    "sass": "^1.56.1",
+    "source-map-loader": "^4.0.1",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.9.3",
+    "webpack": "^5.75.0",
     "webpack-stream": "^7.0.0"
   }
 }
