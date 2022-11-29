@@ -7,16 +7,17 @@ export const pool = new Pool({
     rejectUnauthorized: false,
   },
 });
-connect();
 
-async function connect() {
+async function connectSql() {
   try {
     await pool.connect();
     console.log("Connected to database");
   } catch (error) {
+    console.log(error);
     console.log("Could not connect to database");
   }
 }
+// connectSql();
 
 export async function get20Pokemons(from = 0, limit = 20) {
   const query = {
@@ -29,8 +30,6 @@ export async function get20Pokemons(from = 0, limit = 20) {
       .then((res: any) => res.rows);
   } catch (e) {
     console.error(e);
-  } finally {
-    console.log("done loading 20 pokemons");
   }
 }
 
@@ -49,8 +48,6 @@ export async function getPokemonSearch(pokemon: string | number) {
       return result;
     } catch (e) {
       console.error(e);
-    } finally {
-      console.log("done pokemon search");
     }
   } else {
     query = {
@@ -63,8 +60,6 @@ export async function getPokemonSearch(pokemon: string | number) {
         .then((res: any) => res.rows[0]);
     } catch (e) {
       console.error(e);
-    } finally {
-      console.log("done pokemon search");
     }
   }
 }
@@ -80,8 +75,6 @@ export async function getAllStars() {
       .then((res: any) => res.rows);
   } catch (e) {
     console.error(e);
-  } finally {
-    console.log("done loading stars");
   }
 }
 
@@ -96,8 +89,6 @@ export async function RemoveStar(name: string) {
       .then((res: any) => res.rows);
   } catch (e) {
     console.error(e);
-  } finally {
-    console.log("done removing star");
   }
 }
 
@@ -112,8 +103,6 @@ export async function AddStar(pokemon: string) {
       .then((res: any) => res.rows);
   } catch (e) {
     console.error(e);
-  } finally {
-    console.log("done adding star");
   }
 }
 
@@ -150,7 +139,5 @@ export async function get20Sorted(
       .then((res: any) => res.rows);
   } catch (e) {
     console.error(e);
-  } finally {
-    console.log("done loading 20 pokemons");
   }
 }

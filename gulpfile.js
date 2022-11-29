@@ -13,7 +13,7 @@ function execLog(command = "", cb = undefined) {
 
 // Removes previous dist
 gulp.task("clean", () => {
-  return gulp.src("./dist", { allowEmpty: true }).pipe(clean());
+  return gulp.src(["./dist"], { allowEmpty: true }).pipe(clean());
 });
 
 // copies all files exept ts and scss
@@ -27,6 +27,16 @@ gulp.task("copy-no-transpile-server", () => {
   return gulp
     .src(["server/**/*", "!server/**/*.ts"])
     .pipe(gulp.dest("./dist/server/"));
+});
+
+// Converts ts to js
+gulp.task("transpile-ts", (cb) => {
+  execLog("tsc", cb);
+});
+
+// Creates js bundle from client js files
+gulp.task("bundle-client-js", () => {
+  return webpack(webpackConfig).pipe(gulp.dest("./dist/client"));
 });
 
 // Converts scss to css
@@ -45,11 +55,6 @@ gulp.task("watch-static", () => {
   );
 });
 
-// Converts ts to js
-gulp.task("transpile-ts", (cb) => {
-  execLog("tsc", cb);
-});
-
 // Creates/Updates the dist folder
 gulp.task(
   "build",
@@ -58,7 +63,8 @@ gulp.task(
     "copy-no-transpile-client",
     "copy-no-transpile-server",
     "transpile-scss",
-    "transpile-ts"
+    "transpile-ts",
+    "bundle-client-js"
   )
 );
 
@@ -104,27 +110,4 @@ gulp.task(
 );
 
 // Run all together
-gulp.task("dev", gulp.series("build", gulp.parallel("watch", "nodemon")));
-
-gulp.task("copy-node-to-dist", () => {
-  return gulp
-    .src(["./package.json", "./package-lock.json"])
-    .pipe(gulp.dest("./dist"));
-});
-
-// Creates js bundle from client js files
-gulp.task("bundle-client-js", () => {
-  return webpack(webpackConfig).pipe(gulp.dest("./dist/client"));
-});
-
-gulp.task("clean-client", () => {
-  return gulp.src("dist/client/*.js", { read: false }).pipe(clean());
-});
-
-// Watch all files
-gulp.task(
-  "prod",
-  gulp.parallel("clean-client", "copy-node-to-dist", "bundle-client-js")
-);
-
-gulp.task("deploy", gulp.series("build", "prod"));
+gulp.task("default", gulp.series("build", gulp.parallel("watch", "nodemon")));

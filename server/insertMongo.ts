@@ -1,22 +1,21 @@
-import { MongoClient, Collection, ServerApiVersion } from "mongodb";
+require("dotenv").config();
+import { MongoClient } from "mongodb";
 import * as fs from "fs";
 
-let data = JSON.parse(fs.readFileSync("./pokemonData.json", "utf-8"));
-
+const data = JSON.parse(
+  fs.readFileSync(__dirname + "/pokemonData.json", "utf-8")
+);
 const amountOfOriginalPokemons = data.length;
 let fusionIterator = amountOfOriginalPokemons + 1;
-
 const client = new MongoClient(process.env.MONGO_DB);
 
-run();
-
-async function run() {
+function run() {
   let arr = [];
-
   addOriginalPokemonsToArray(arr);
   addAllFusionsToArray(arr);
-  await addArrayToDb(arr);
+  addArrayToDb(arr.slice(0, 50000)).then(() => console.log("done"));
 }
+run();
 
 function addOriginalPokemonsToArray(arr) {
   arr.push(...data);
@@ -57,20 +56,17 @@ function combinePokemons(pok1, pok2, id) {
 async function addArrayToDb(arr) {
   try {
     await client.connect();
-    // Declare db and its collection
     let pokedex = client.db("pokedex");
+    const dbCollections = await pokedex.listCollections().toArray();
     let pokemons = pokedex.collection("pokemons");
-    // Clear any previous data in the collection and redeclare the collection
-    pokemons.drop();
-    pokemons = pokedex.collection("pokemons");
-
-    // Insert all pokemons, originals and fusions, into the db.
+    if (dbCollections.map((x) => x.name).includes("pokemons")) {
+      await pokemons.drop();
+    }
     await pokemons.insertMany(arr, {
       maxTimeMS: 99999,
     });
+    await client.close();
   } catch (e) {
     console.log(e);
-  } finally {
-    await client.close();
   }
 }

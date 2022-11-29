@@ -48,7 +48,6 @@ app.get("/pokemons", async (req: Request, res: Response) => {
 });
 
 app.get("/:searchValue", async (req: Request, res: Response) => {
-  // If request contains a number
   if (!isNaN(Number(req.params.searchValue))) {
     try {
       const pokemonID = Number(req.params.searchValue);
@@ -61,7 +60,6 @@ app.get("/:searchValue", async (req: Request, res: Response) => {
     } catch {
       res.status(400).send({ message: "Error" });
     }
-    // If request contains a string
   } else {
     try {
       const pokemonName = req.params.searchValue.toLowerCase();

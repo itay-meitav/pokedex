@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "ES6",
     "module": "CommonJS",
     "moduleResolution": "node",
     "lib": ["es2021", "DOM"],
-    "baseUrl": "./",
+    "baseUrl": ".",
     "outDir": "./dist/",
-    "rootDir": "./",
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "skipLibCheck": true,
