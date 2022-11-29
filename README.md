@@ -8,14 +8,17 @@ This project was a part of the Cyber4s program by Scale-Up Velocity.
 
 A pokédex is a website with a catalog of Pokémon. It shows various information on different species of Pokémon. The name Pokédex is a neologism including "Pokémon" (which itself is a portmanteau of "pocket" and "monster") and "index".
 
-## Live Application
+   <br/>
 
-Deployed on Heroku:
-<a href="https://www.cyber4s-pokedex.tk/">cyber4s pokedex</a>
+## Live Application:
+
+### [cyber4s-pokedex](https://www.cyber4s-pokedex.tk/)
+
+<br/>
+
+## Local Installation:
 
 ---
-
-## Run locally
 
 1. **Clone the repo**
    ```
@@ -23,19 +26,12 @@ Deployed on Heroku:
    ```
 2. **Install all the dependencies**
    ```
-   cd server +  npm ci
+   npm ci
    ```
-   ```
-   cd client +  npm ci
-   ```
-3. **Run server**
-   ```
-   cd server + npm start
-   ```
-4. **Run Client**
+3. **Run application**
 
    ```
-   cd client + npm start
+   npm start
    ```
 
-5. **Go to http://localhost:3000 and have fun**!
+4. **Go to http://localhost:3000 and have fun**!
