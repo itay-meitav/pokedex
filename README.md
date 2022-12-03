@@ -12,7 +12,7 @@ A pokédex is a website with a catalog of Pokémon. It shows various information
 
 ## Live Application:
 
-### [cyber4s-pokedex](https://www.cyber4s-pokedex.tk/)
+### [cyber4s-pokedex](https://www.pokedex4s.tk/)
 
 <br/>
 
